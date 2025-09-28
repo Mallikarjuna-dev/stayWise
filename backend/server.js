@@ -16,7 +16,7 @@ connectDB();
 
 app.use(cors({
     origin: [
-        // "https://stay-wise-ten.vercel.app",
+        "https://stay-wise-ten.vercel.app",
         "http://localhost:5173"
     ],
     credentials: true,
