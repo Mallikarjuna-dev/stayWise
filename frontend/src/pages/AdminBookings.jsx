@@ -1,30 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import client from "../api/client";
-import { useAuth } from "../context/AuthContext";
 
-export default function AdminBookings() {
-    const { user } = useAuth();
-    if (!user?.role || user.role !== "admin") return <p>Access denied</p>;
+export default function MyBookings() {
 
-    const { data: bookings, isLoading } = useQuery(["allBookings"], async () => {
-        const res = await client.get("/bookings");
-        return res.data;
+    // For Admin: all users bookings
+    const { data: bookings, isLoading, error } = useQuery({
+        queryKey: ["bookings"],
+        queryFn: async () => {
+            const { data } = await client.get("/bookings");
+            // return Array.isArray(data) ? data : data.data || [];
+            if (!data) return [];
+            if (Array.isArray(data)) return data;
+            return data.bookings || [];
+
+        },
     });
 
     if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Error loading bookings</p>;
 
     return (
-        <div>
-            <h1 className="text-2xl font-bold mb-4">All Bookings</h1>
-            <ul>
-                {bookings?.map((b) => (
-                    <li key={b._id} className="border p-2 mb-2">
-                        <p>User: {b.user.name}</p>
-                        <p>Property: {b.property.name}</p>
-                        <p>From: {b.startDate} To: {b.endDate}</p>
-                    </li>
-                ))}
-            </ul>
+        <div className="my-4 max-w-4xl mx-auto text-lg text-gray-700">
+            <h1 className="text-2xl font-bold text-center mb-4">All Bookings</h1>
+            {bookings.length === 0 ? (
+                <p>No bookings found.</p>
+            ) : (
+                bookings.map((b) => (
+                    <div className="my-3" key={b._id}>
+                        Email: {b.user?.email} booked <strong>{b.property?.title}</strong> from (Place) from {b.checkIn} to {b.checkOut} (Dates)
+                    </div>
+                ))
+            )}
         </div>
     );
 }

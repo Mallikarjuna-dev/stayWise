@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 p-4">
+      <main className="flex-1 p-4 px-8">
         <Routes>
           <Route path="/" element={<Navigate to="/properties" />} />
           <Route path="/login" element={<Login />} />

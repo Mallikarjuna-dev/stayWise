@@ -24,7 +24,7 @@ export default function Login() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
+        <div className="max-w-md mx-auto mt-24 p-6 bg-white shadow-2xl rounded">
             <h1 className="text-2xl mb-4 font-bold">Login</h1>
             {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -34,6 +34,7 @@ export default function Login() {
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
+                    required
                     className="border p-2 rounded"
                 />
                 <input
@@ -42,10 +43,11 @@ export default function Login() {
                     placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
+                    required
                     className="border p-2 rounded"
                 />
                 <button className="bg-blue-600 text-white py-2 rounded">Login</button>
             </form>
         </div>
     );
-}
+};

@@ -15,17 +15,17 @@ export default function PropertyList() {
     return (
         <div>
             <h1 className="text-2xl font-bold mb-4">Properties</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {data.map((p) => (
                     <div key={p._id} className="border rounded shadow p-4">
                         <h2 className="text-lg font-semibold">{p.title}</h2>
-                        <p>{p.location}</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-md">{p.location}</p>
+                        <p className="text-sm text-gray-600 font-semibold">
                             ₹{p.pricePerNight} / night
                         </p>
                         <Link
                             to={`/properties/${p._id}`}
-                            className="text-blue-600 mt-2 inline-block"
+                            className="text-blue-600 mt-2 font-medium inline-block"
                         >
                             View Details
                         </Link>

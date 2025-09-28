@@ -6,15 +6,14 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     return (
-        <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-            <Link to="/" className="font-bold text-lg">StayWise</Link>
+        <nav className="bg-blue-600 text-white p-4 px-8 flex justify-between items-center">
+            <Link to="/" className="font-bold text-xl">StayWise</Link>
             <div className="flex gap-4 font-medium items-center">
                 <Link to="/properties">Properties</Link>
                 {user ? (
                     <>
                         <Link to="/bookings">My Bookings</Link>
 
-                        {/* Admin links */}
                         {user.role === "admin" && (
                             <>
                                 <Link to="/admin/properties">Admin Properties</Link>
