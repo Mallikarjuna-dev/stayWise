@@ -1,69 +1,88 @@
-const { validationResult } = require('express-validator');
-const Booking = require('../models/Booking');
-const Property = require('../models/Property');
+const Booking = require("../models/Booking");
+const Property = require("../models/Property");
 
+// Create booking
 exports.createBooking = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
+    try {
+        const { propertyId, checkIn, checkOut, totalPrice, guests } = req.body;
 
-    const { propertyId, checkIn, checkOut, guests } = req.body;
+        if (!propertyId || !checkIn || !checkOut || !totalPrice) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
 
-    const property = await Property.findById(propertyId);
-    if (!property) return res.status(404).json({ message: 'Property not found' });
+        const property = await Property.findById(propertyId);
+        if (!property) {
+            return res.status(404).json({ message: "Property not found" });
+        }
 
-    const ci = new Date(checkIn);
-    const co = new Date(checkOut);
-    if (co <= ci) return res.status(400).json({ message: 'checkOut must be after checkIn' });
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        if (isNaN(checkInDate) || isNaN(checkOutDate) || checkInDate >= checkOutDate) {
+            return res.status(400).json({ message: "Invalid check-in or check-out dates" });
+        }
 
-    // basic pricing calculation:
-    const nights = Math.ceil((co - ci) / (1000 * 60 * 60 * 24));
-    const totalPrice = nights * property.pricePerNight;
+        const booking = new Booking({
+            user: req.user.id,
+            property: propertyId,
+            checkIn: checkInDate,
+            checkOut: checkOutDate,
+            totalPrice,
+            guests: guests || 1,
+        });
+        await booking.save();
 
-    const booking = await Booking.create({
-        user: req.user._id,
-        property: property._id,
-        checkIn: ci,
-        checkOut: co,
-        guests: guests || 1,
-        totalPrice,
-    });
+        const populatedBooking = await Booking.findById(booking._id)
+            .populate("property", "title location pricePerNight")
+            .populate("user", "email");
 
-    res.status(201).json({ message: 'Booking created', booking });
+        res.status(201).json(populatedBooking);
+    } catch (err) {
+        console.error("Booking creation error:", err);
+        res.status(500).json({ message: err.message });
+    }
 };
 
+// Current user's bookings
 exports.getMyBookings = async (req, res) => {
-    const bookings = await Booking.find({ user: req.user._id }).populate('property').sort({ createdAt: -1 });
-    res.json({ bookings });
+    try {
+        const bookings = await Booking.find({ user: req.user.id })
+            .populate("property", "title location pricePerNight")
+            .populate("user", "email");
+
+        res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 };
 
+// Admin: all bookings
 exports.getAllBookings = async (req, res) => {
-    // admin only
-    const bookings = await Booking.find().populate('property user').sort({ createdAt: -1 });
-    res.json({ bookings });
+    try {
+        const bookings = await Booking.find()
+            .populate("property", "title location pricePerNight")
+            .populate("user", "email");
+
+        res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 };
 
+// Get booking by ID
 exports.getBookingById = async (req, res) => {
-    const booking = await Booking.findById(req.params.id).populate('property user');
-    if (!booking) return res.status(404).json({ message: 'Booking not found' });
+    try {
+        const booking = await Booking.findById(req.params.id)
+            .populate("property", "title location pricePerNight")
+            .populate("user", "email");
 
-    // allow admin OR the owner
-    const isOwner = booking.user._id.toString() === req.user._id.toString();
-    if (!isOwner && req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Not allowed' });
+        if (!booking) return res.status(404).json({ message: "Booking not found" });
+
+        if (req.user.role !== "admin" && booking.user._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Not authorized" });
+        }
+
+        res.json(booking);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-    res.json({ booking });
-};
-
-exports.cancelBooking = async (req, res) => {
-    const booking = await Booking.findById(req.params.id);
-    if (!booking) return res.status(404).json({ message: 'Booking not found' });
-
-    const isOwner = booking.user.toString() === req.user._id.toString();
-    if (!isOwner && req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Not allowed' });
-    }
-
-    booking.status = 'cancelled';
-    await booking.save();
-    res.json({ message: 'Booking cancelled', booking });
 };

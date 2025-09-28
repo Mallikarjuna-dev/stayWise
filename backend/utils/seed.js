@@ -9,12 +9,11 @@ const Property = require('../models/Property');
 const run = async () => {
     try {
         await connectDB();
-        // clear
         await User.deleteMany({});
         await Property.deleteMany({});
 
         const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash('Admin123!', salt);
+        const hashed = await bcrypt.hash('Admin1234', salt);
 
         const admin = await User.create({
             name: 'Admin User',

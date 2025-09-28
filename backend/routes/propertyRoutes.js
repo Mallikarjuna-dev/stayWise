@@ -20,7 +20,4 @@ router.post(
     propertyController.createProperty
 );
 
-router.put('/:id', auth, isAdmin, propertyController.updateProperty);
-router.delete('/:id', auth, isAdmin, propertyController.deleteProperty);
-
 module.exports = router;

@@ -8,11 +8,11 @@ router.post(
     '/',
     auth,
     [
-    body('propertyId').notEmpty().withMessage('propertyId required'),
-    body('checkIn').isISO8601().withMessage('valid checkIn date required'),
-    body('checkOut').isISO8601().withMessage('valid checkOut date required'),
-    body('totalPrice').isNumeric().withMessage('totalPrice required'),
-  ],
+        body('property').notEmpty().withMessage('propertyId required'),
+        body('checkIn').isISO8601().withMessage('valid checkIn date required'),
+        body('checkOut').isISO8601().withMessage('valid checkOut date required'),
+        body('totalPrice').isNumeric().withMessage('totalPrice required'),
+    ],
     bookingController.createBooking
 );
 
@@ -23,6 +23,5 @@ router.get('/my', auth, bookingController.getMyBookings);
 router.get('/', auth, isAdmin, bookingController.getAllBookings);
 
 router.get('/:id', auth, bookingController.getBookingById);
-router.post('/:id/cancel', auth, bookingController.cancelBooking);
 
 module.exports = router;

@@ -6,7 +6,6 @@ exports.createProperty = async (req, res) => {
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
     const payload = req.body;
-    // owner can be admin id if needed
     const property = await Property.create(payload);
     res.status(201).json({ message: 'Property created', property });
 };
@@ -20,16 +19,4 @@ exports.getProperty = async (req, res) => {
     const property = await Property.findById(req.params.id);
     if (!property) return res.status(404).json({ message: 'Property not found' });
     res.json({ property });
-};
-
-exports.updateProperty = async (req, res) => {
-    const property = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!property) return res.status(404).json({ message: 'Property not found' });
-    res.json({ message: 'Property updated', property });
-};
-
-exports.deleteProperty = async (req, res) => {
-    const property = await Property.findByIdAndDelete(req.params.id);
-    if (!property) return res.status(404).json({ message: 'Property not found' });
-    res.json({ message: 'Property deleted' });
 };
