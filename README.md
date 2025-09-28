@@ -154,9 +154,9 @@ POST /api/bookings (User) → Create booking
 
 ## 🔗 Live Demo
 
-### Frontend (Vercel): https://staywise.vercel.app
+### Frontend (Vercel): https://stay-wise-ten.vercel.app/
 
-### Backend (Render):https://staywise-api.onrender.com
+### Backend (Render): https://staywise-e00p.onrender.com/
 
 ## 👨‍💻 Author
 

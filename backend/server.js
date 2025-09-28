@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 
 const allowedOrigins = [
-    "http://localhost:5173", 
-    // "https://staywise.vercel.app" 
+    "http://localhost:5173",
+    "https://stay-wise-ten.vercel.app/"
 ];
 
 app.use(
