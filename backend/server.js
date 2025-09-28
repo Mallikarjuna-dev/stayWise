@@ -14,17 +14,13 @@ const PORT = process.env.PORT || 8000;
 
 connectDB();
 
-const allowedOrigins = [
-    "http://localhost:5173",
-    "https://stay-wise-ten.vercel.app/"
-];
-
-app.use(
-    cors({
-        origin: allowedOrigins,
-        credentials: true,
-    })
-);
+app.use(cors({
+    origin: [
+        // "https://stay-wise-ten.vercel.app",
+        "http://localhost:5173"
+    ],
+    credentials: true,
+}));
 
 app.use(express.json());
 app.use(morgan('dev'));
