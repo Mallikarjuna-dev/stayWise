@@ -5,8 +5,8 @@ const morgan = require('morgan');
 
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
-const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const propertyRoutes = require('./routes/propertyRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
@@ -30,7 +30,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 
-// app.get('/', (req, res) => res.send({ ok: true, msg: 'StayWise API running' }));
 app.get('/', (req, res) => {
     res.send({ ok: true, msg: 'StayWise API running' })
 });
