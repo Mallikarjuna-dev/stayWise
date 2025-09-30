@@ -88,6 +88,7 @@ export default function AdminDashboard() {
                         </li>
                     ))}
                 </ul>
+                
                 <div className="mt-4 border p-4 rounded">
                     <h4 className="font-semibold mb-2">Add New Property</h4>
                     <input

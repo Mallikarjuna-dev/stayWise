@@ -69,38 +69,6 @@ export default function PropertyList() {
                 ))}
             </div>
 
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-                {data.map((p) => (
-                    <div
-                        key={p._id}
-                        className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-200"
-                    >
-                        <img
-                            src={p.images?.[0] || "https://via.placeholder.com/400"}
-                            alt={p.title}
-                            className="h-48 w-full object-cover"
-                        />
-                        <div className="p-4">
-                            <h2 className="text-xl font-bold">{p.title}</h2>
-                            <p className="text-gray-600">{p.location}</p>
-                            <p className="mt-2 text-blue-600 font-semibold">
-                                ₹{p.pricePerNight} / night
-                            </p>
-                            <button
-                                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-                            >
-                                <Link
-                                    to={`/properties/${p._id}`}
-                                    // className="text-blue-600 mt-2 font-medium inline-block"
-                                >
-                                    View Details
-                                </Link>
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div> */}
-
             {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {data.map((p) => (
                     <div key={p._id} className="border rounded shadow p-4">
