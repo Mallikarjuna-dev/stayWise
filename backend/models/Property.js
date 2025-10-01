@@ -10,7 +10,9 @@ const propertySchema = new mongoose.Schema(
         amenities: [{ type: String }],
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // optional
     },
-    { timestamps: true }
+    {
+        timestamps: true
+    }
 );
 
 module.exports = mongoose.model('Property', propertySchema);
