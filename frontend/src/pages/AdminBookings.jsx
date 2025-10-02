@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import client from "../api/client";
+import Loader from "../components/Loader";
 
 export default function MyBookings() {
 
@@ -16,7 +17,7 @@ export default function MyBookings() {
         },
     });
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Loader />;
     if (error) return <p>Error loading bookings</p>;
 
     return (

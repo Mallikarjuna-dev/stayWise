@@ -28,7 +28,7 @@ export default function PropertyList() {
                             className="h-48 w-full object-cover"
                         />
 
-                        {/* Card Body */} 
+                        {/* Card Body */}
                         <div className="p-4">
                             {/* Title & Location */}
                             <h2 className="text-xl font-bold truncate">{p.title}</h2>
